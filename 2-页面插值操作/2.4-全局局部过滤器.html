@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+       {{date}} <br>
+       {{date|date-format('yyyy-mm-dd')}}
+    </div>
+    <!--从CDN引入vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        Vue.filter('date-format', function(input, pattern  = '') {
+            let dt = new Date(input);
+
+            // 获取年月日
+            let y = dt.getFullYear();
+            let m = (dt.getMonth() + 1).toString().padStart(2, '0');
+            let d = dt.getDate().toString().padStart(2, '0');
+
+            //获取时分秒
+            let hh = dt.getHours().toString().padStart(2, '0');
+            let mm = dt.getMinutes().toString().padStart(2, '0');
+            let ss = dt.getSeconds().toString().padStart(2, '0');
+
+            if(pattern.toLowerCase() === 'yyyy-mm-dd') {
+                return `${y}-${m}-${d}`;
+            } else {
+                return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+            }
+
+        });
+        const app = new Vue({ //初始化一个VUE实例
+            el: '#app',     // 用于页面渲染VUE实例的元素
+            data: { // 定义数据
+                date: new Date()
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 
+        如果我们想将html原样输出，就是用{{}}就可以了
+        如果我们希望浏览器解析html后展示，那就要使用到v-html了
+     -->
+</head>
+<body>
+    <div id="app">
+        <span>插值表达式效果 -> {{baidu}}</span>
+        <br>
+        <span> 可以解析html代码 -> <span v-html="baidu"></span> </span>
+        <h1 v-pre> {{iwin}}  以字符串形式输出</h1>       
+    </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+      <script>
+        const app = new Vue({
+          el: '#app',
+          data: {
+            baidu: '<a href="https://baidu.com">百度 </a>'
+          }
+        })
+      </script>
+</body>
+</html>

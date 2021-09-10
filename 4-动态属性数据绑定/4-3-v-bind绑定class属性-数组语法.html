@@ -12,16 +12,13 @@
         .red {
             color: red;
         }
-        .bold {
-            font-weight: 800;
-            font-size: 40px;
-        }
     </style>
 </head>
 <body>   
     <div id="app">
       
-        <h2 v-bind:class="cssArray">{{message}}</h2>
+        <!-- <h2 v-bind:class="{blue: isBLue, red:isRed}">{{message}}</h2> -->
+        <h2 v-bind:class="getH2Class()">{{message}}</h2>
         <button @click="changeColor">换颜色</button>
     </div>
     <!--从CDN引入vue.js-->
@@ -31,19 +28,17 @@
             el: '#app',     // 用于页面渲染VUE实例的元素
             data: { // 定义数据
                 message: '你好，VUE',
-                cssArray: ['bold','blue']
+                isBLue: true,
+                isRed: false
             },
             methods: {
-                changeColor(){
-                    if(this.cssArray[1] !== 'blue'){
-                        this.cssArray.pop();
-                        this.cssArray.push('blue')
-                    }else{
-                        this.cssArray.pop();
-                        this.cssArray.push('red')
-                    }
+                getH2Class() {
+                    return {blue: this.isBLue, red: this.isRed};
+                },
+                changeColor() {
+                    this.isBlue = !this.isBlue
+                    this.isRed = !this.isRed
                 }
-                
             }
         })
     </script>

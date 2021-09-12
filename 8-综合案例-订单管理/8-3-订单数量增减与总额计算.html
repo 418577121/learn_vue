@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+</head>
+<!-- 
+   computed有缓存效果
+-->
+<body>   
+    <div id="app">
+         
+         <div class="panel panel-primary">
+               <div class="panel-heading">
+                     <h3 class="panel-title">订单管理</h3>
+               </div>
+               <div class="panel-body">
+                   <label for="brand" class="col-sm-2">
+                品牌:   <input type="text" id="brand" v-model="brandQueryParam"/>
+                   </label>
+
+                   
+                   <button type="button" class="btn btn-primary" @click="queryByBrand()">查询</button>
+                   
+               </div>
+         </div>
+         
+         <table class="table table-bordered table-hover table-striped">
+             <thead>
+                 <tr>
+                     <th>品牌</th>
+                     <th>订单日期</th>
+                     <th>订单价格（万元）</th>
+                     <th>购买数量</th>
+                     <th>操作</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr v-for="(item, index) in orders" :key="item.id">
+                     <td>{{item.brand}}</td>
+                     <td>{{item.orderDate}}</td>
+                     <td>{{item.price}}</td>
+                     <td>
+                         <button @click="incr(index)">+</button>
+                         {{item.num}}
+                         <button @click="decr(index)" :disabled="item.num<=1">-</button></td>
+                     <td><button @click="delOrder(index)">删除</button></td>
+                 </tr>
+             </tbody>
+             <tfoot>
+                 <tr>
+                     <th>订单总额为{{totalPrice}} 万元</th>
+                 </tr>
+             </tfoot>
+         </table>
+         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+             <legend>新增订单</legend>
+             <div class="form-group">
+                 <label>品牌</label>
+                 <input v-model="brand" type="text" class="form-control" placeholder="如：宝马，奔驰">
+             </div>
+             <div class="form-group">
+                <label>价格(万元)</label>
+                <input v-model="price" type="text" class="form-control" placeholder="如：50">
+            </div>
+            <div class="form-group">
+                <label>数量</label>
+                <input v-model="num" type="text" class="form-control" placeholder="如：3">
+            </div>
+            <button @click="addOrder" type="submit" class="btn btn-primary">提交</button>
+         </div>
+    </div>
+    <!--从CDN引入vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+         Vue.filter('date-format', function(input, pattern  = '') {
+            let dt = new Date(input);
+
+            // 获取年月日
+            let y = dt.getFullYear();
+            let m = (dt.getMonth() + 1).toString().padStart(2, '0');
+            let d = dt.getDate().toString().padStart(2, '0');
+
+            //获取时分秒
+            let hh = dt.getHours().toString().padStart(2, '0');
+            let mm = dt.getMinutes().toString().padStart(2, '0');
+            let ss = dt.getSeconds().toString().padStart(2, '0');
+
+            if(pattern.toLowerCase() === 'yyyy-mm-dd') {
+                return `${y}-${m}-${d}`;
+            } else {
+                return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+            }
+        });
+        const app = new Vue({ //初始化一个VUE实例
+            el: '#app',     // 用于页面渲染VUE实例的元素
+            data: { // 定义数据
+              id: 0,
+              brand: "",
+              price: 0,
+              num: 0,
+              orders: [],
+              brandQueryParam: ""
+            },
+            methods:{
+                delOrder(index) {
+                    this.orders.splice(index, 1)
+                },
+                queryByBrand() {
+                    let _this = this
+                    this.orders =this.orders.filter(function(item) {
+                        return item.brand.includes(_this.brandQueryParam);
+                    })
+                },
+                incr(index) {
+                   this.orders[index].num++
+                },
+                decr(index) {
+                    this.orders[index].num--
+                },
+                addOrder() {
+                    this.orders.push({
+                        id: this.id++,
+                        brand: this.brand,
+                        orderDate: new Date(),
+                        price: this.price,
+                        num: this.num
+                    }),
+                    this.brand = "",
+                    this.price = this.num = 0
+                }
+            },
+            computed: {
+                totalPrice() {
+                    return this.orders.reduce(function(preValue, item) {
+                        return preValue + item.price * item.num
+                    }, 0)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

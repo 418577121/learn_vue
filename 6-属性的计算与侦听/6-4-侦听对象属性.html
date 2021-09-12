@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+   player是一个对象，当我们需要侦听对象属性的变化时，需要设置参数deep:true。否则侦听无效。注意监听数组的变动时不需要设置deep:true（前提是要用数组响应式函数操作数组，直接通过数组下标操作数组不是响应式的，也无法被侦听到。4.3章节我们学习过）。
+  当我们希望页面加载的时候，handler方法就被调用（可用于数据初始化）。需要设置参数immediate:true.否则只有在侦听属性发生变化时，handler才会被调用。
+-->
+<body>   
+    <div id="app">
+        <label for="firstName">firstName:</label>
+        <input type="text" v-model.lazy="player.firstName" id="firstName"/>
+        <label for="lastName">lastName:</label>
+        <input type="text" v-model="player.lastName" id="lastName"/>
+        <h2>全名： {{player.fullName}}</h2>
+    </div>
+    <!--从CDN引入vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        const app = new Vue({ //初始化一个VUE实例
+            el: '#app',     // 用于页面渲染VUE实例的元素
+            data: { // 定义数据
+                player: {
+                    firstName: "",
+                    lastName: "",
+                    fullName: ""
+                }
+               
+            },
+            watch: {
+                player: {
+                    handler(newVal,oldVal){
+                        console.log("player-handler函数被调用")
+                        this.player.fullName = newVal.firstName + " " + newVal.lastName;
+                    },
+                    immediate: true,
+                    deep: true
+                },
+                'player.firstName': function(){
+                    console.log("单个属性...player.firstName-headler函数被调用")
+                }
+            }
+        })
+    </script>
+</body>
+</html>

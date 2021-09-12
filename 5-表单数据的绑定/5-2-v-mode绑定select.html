@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- v-model 实际上是一个语法糖 
+    v-bind绑定value属性
+    v-on监听表单元素的输入事件，并改变数据
+-->
+<body>   
+    <div id="app">
+       <h2>你最喜欢吃的水果 : {{mvp}}</h2>
+       <select v-model="mvp">
+           <option value="苹果">苹果</option>
+           <option value="菠萝">菠萝</option>
+       </select>
+       
+       <br>
+       <h2>你喜欢干的事情 {{allDefensiveTeam}}</h2>
+        <select v-model="allDefensiveTeam" multiple>
+            <option value="学习">学习</option>
+            <option value="看书">看书</option>
+            <option value="打游戏">打游戏</option>
+        </select>
+    </div>
+    <!--从CDN引入vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        const app = new Vue({ //初始化一个VUE实例
+            el: '#app',     // 用于页面渲染VUE实例的元素
+            data: { // 定义数据
+               mvp: '菠萝',
+               allDefensiveTeam: ['学习','看书','打游戏']
+            }
+        })
+    </script>
+</body>
+</html>

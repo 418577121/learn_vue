@@ -4,19 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>测试 live </title>
 </head>
 <body>   
     <div id="app">
         <h2>你好啊，{{message}}</h2>
+        <button @dblclick="testdblclick">双击事件</button>
     </div>
-    <!--从CDN引入vue.js-->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script>
         const app = new Vue({ //初始化一个VUE实例
             el: '#app',     // 用于页面渲染VUE实例的元素
             data: { // 定义数据
-                message: 'VUE'
+                message: 'VUE1111111111222221'
+            },
+            methods: {
+                testdblclick: function() {
+                    alert("test 双击事件!")
+                }
             }
         })
     </script>

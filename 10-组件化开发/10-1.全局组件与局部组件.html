@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+  全局的组件遵循先定义（vue.extend()）、再注册(vue.component())、而后使用的原则
+  template用于定义组件的视图内容，即：html代码、vue指令等。可以使用vue指令，后面章节会学习。
+  如果用new VUE()定义多个vue实例，全局组件可以跨多个实例使用
+  通常组件定义的名称为首字母大写，驼峰标志。如：MyComponent
+  在dom中使用组件，通常遵循使用“-”分隔单词，小写规范。如:my-component 
+ -->
+ <!-- 
+在html代码里面标签属性命名时，使用中划线属性写法。
+在js代码里面的变量或属性使用驼峰的写法，组件名首字母大写，变量属性名首字母小写。
+插值表达式{{}}是代码？还是html标签属性？html规范里面有{{}}这种用法么？所以它当然是代码。
+  -->
+<body>   
+  <template id="Login">
+    <h3>登录组件</h3>
+  </template>
+  <template id="Register">
+    <h3>注册组件</h3>
+  </template>
+  <template id="MyComponent2">
+    <div>
+      <h3>测试组件</h3>
+      </h2>测试组件内容</h2>
+    </div>
+  </template>
+
+  <template id="Child">
+    <div>
+      <p>this is child template</p>
+      <p>{{childMessage}}</p>
+      <button @click="parentInfo()">打印父组件信息</button>
+      <h2>{{childPlayer}}</h2>
+      <h3>{{childMessage}}</h3>
+      <button @click="incr">+1</button>
+      <button @click="decr">-1</button>
+    </div>
+  </template>
+
+  <template id="Parent">
+    <div>
+      <span>{{count}}</span>
+      <button @click="incr">+</button>
+      <p>this is parent template</p>
+      <p>{{parentMessage}}</p>
+      <button @click="childInfo()">打印子组件信息</button>
+      <child ref="childRef"
+             :child-player="player" 
+             :child-message="message"
+             @increment="changePCounter"
+             @decrement="changePCounter"></child>
+      <h2>父组件数值{{pCounter}}</h2>
+    </div>
+  </template>
+  <div id="app">
+    <a href="" @click.prevent="comName='login'">登录</a>
+    <a href="" @click.prevent="comName='register'">注册</a>
+    
+    <component :is="comName"></component>
+    <my-component></my-component>
+    <my-component2></my-component2>
+    <parent></parent>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+  <script>
+    // 定于组件 组件变量名称大写 驼峰标识
+  //  const MYComponent =  Vue.extend({
+  //     template: `
+  //        <div>
+  //           <h3>测试组件</h3>
+  //           </h2>测试组件内容</h2>
+  //        </div>
+  //     `
+  //   })
+    // 注册组件
+ //   Vue.component("MyComponent", MYComponent)
+ Vue.component("MyComponent", {
+   template: `
+        <div>
+          <h3>测试组件</h3>
+          </h2>测试组件内容</h2>
+        </div>
+   `
+ })
+ Vue.component('Login', {
+     template: '#Login'
+ })
+
+ Vue.component('Register', {
+   template: '#Register'
+ })
+      const app = new Vue({ //初始化一个VUE实例
+          el: '#app',     // 用于页面渲染VUE实例的元素
+          data: { // 定义数据
+           isLogin: true,
+           comName: 'Login'
+          },
+          // 局部私有组件
+          components: {
+            MyComponent2: {
+              template: '#MyComponent2'
+            },
+            Parent: {
+              template: '#Parent',
+              data: function() {
+                  return {
+                    count: 0,
+                    parentMessage: "我是父组件的数据",
+                    player: {
+                      name: 'kobe',
+                      age: 39
+                    },
+                    message: '父组件数据-子组件',
+                    pCounter: 0
+                  }
+              },
+              methods: {
+                incr() {
+                  this.count++
+                },
+                childInfo() {
+                  console.log(this.$refs.childRef.childMessage)
+                },
+                changePCounter(counter) {
+                   this.pCounter = counter
+                }
+              },
+              components: {
+                'Child': {
+                  template: '#Child',
+                  data: function() {
+                    return {
+                      childMessages: "我是子组件信息",
+                      cCounter: 0
+                    }
+                  },
+                  methods: {
+                    parentInfo() {
+                      console.log(this.$parent.parentMessage)
+                    },
+                    incr() {
+                      this.cCounter++
+                      this.$emit('increment', this.cCounter)
+                    },
+                    decr() {
+                      this.cCounter--
+                      this.$emit('decrement', this.cCounter)
+                    }
+                  },
+                  props: ['childPlayer', 'child-message']
+              }
+              }
+            }
+          }
+      })
+  </script>
+</body>
+</html>

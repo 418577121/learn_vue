@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试 live </title>
+</head>
+<!-- 
+
+ -->
+<body>   
+    <div id="app">
+       <h2>当前n的值：{{n}}</h2>
+       <button @click="n++">n+1</button>
+    </div>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        Vue.config.productionTip = false;
+        const app = new Vue({ //初始化一个VUE实例
+            el: '#app',     // 用于页面渲染VUE实例的元素
+            data: { // 定义数据
+                n: 1
+            },
+            methods: {
+               change(){
+                
+               }
+            },
+            beforeCreate() {
+                console.log('beforCreate.....')
+            },
+        })
+       
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+           display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>{{time}}</h1>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+     <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.10.6/dayjs.min.js"></script>
+    <script type="text/javascript">
+        new Vue({
+           el: "#app",
+           data: {
+             time: 1634391921178
+           },
+           computed: {
+               fmtTime() {
+                   return dayjs().format('YYYY-MM-DD HH:mm:ss')
+               }
+           },
+           filters: {
+            filterTime(value){
+               console.log(value)
+               return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
+            }
+           }
+        })
+    </script>
+     
+</body>
+</html>

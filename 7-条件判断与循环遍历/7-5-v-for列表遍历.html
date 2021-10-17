@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- 
+   computed有缓存效果
+-->
+<body>   
+    <div id="app">
+        <input type="text" placeholder="请输入名称" v-model="name"/>
+        <button @click="sortType = 1">降序</button>
+        <button @click="sortType = 2">升序</button>
+        <button @click="sortType = 0">原顺序</button>
+      <ul>
+          <ul v-for="(u, index) of flterUser" :key="u.id">
+              {{u.name}}--- {{u.age}}--- {{u.sex}}
+          </ul>
+      </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        const app = new Vue({ //初始化一个VUE实例
+            el: '#app',     // 用于页面渲染VUE实例的元素
+            data: { // 定义数据
+              user: [
+                  {"id": "001","name": "曹操","age": 152,"sex": "男"},
+                  {"id": "002","name": "曹植","age": 1,"sex": "男"},
+                  {"id": "003","name": "貂蝉","age": 17,"sex": "女"},
+                  {"id": "004","name": "吕布","age": 15,"sex": "男"}
+              ],
+              name: '',
+              sortType: 0
+            },
+            computed: {
+                flterUser(){
+                  let arr =  this.user.filter((val)=>{
+                      return val.name.indexOf(this.name) !== -1
+                    })
+                  // js中非0数都是true  
+                  if (this.sortType) {
+                    arr.sort((a,b) =>{
+                       return this.sortType === 1 ? b.age - a.age : a.age - b.age
+                    })
+                  }
+                  return arr
+                }
+            }
+        })
+    </script>
+</body>
+</html>
